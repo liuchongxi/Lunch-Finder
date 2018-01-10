@@ -10,3 +10,9 @@ APP_ROOT  = File.dirname(__FILE__)
 
 $:.unshift( File.join(APP_ROOT, "lib") )
 require "guide"
+
+puts "Please select a location area:"
+location = gets.chomp
+
+guide = Guide.new(location)
+guide.launch!
