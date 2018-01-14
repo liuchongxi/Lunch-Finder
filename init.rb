@@ -12,6 +12,7 @@ $:.unshift( File.join(APP_ROOT, "lib") )
 require "guide"
 
 puts "Please select a restaurant location area:"
+print ">>>>>> "
 location = gets.chomp
 
 guide = Guide.new(location)
