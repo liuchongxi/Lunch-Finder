@@ -2,8 +2,8 @@ class Restaurant
 
 	@@filepath = nil
 
-	def self.filepath= path = nil
-		@@filepath = File.join(APP_ROOT, path)
+	def self.filepath= area = nil
+		@@filepath = File.join(APP_ROOT, "Area", area)
 	end
 
 	def self.file_exists?

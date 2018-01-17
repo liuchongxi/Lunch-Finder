@@ -2,9 +2,9 @@ require 'restaurant'
 
 class Guide
 
-  def initialize path=nil
+  def initialize area=nil
     # locate the restaurant text file at path
-    Restaurant.filepath = path
+    Restaurant.filepath = area
     if Restaurant.file_useable?
       puts "Found restaurant file"
     # or create a new file
@@ -34,5 +34,6 @@ class Guide
 
   def conclusion
     puts "\n\n<<<不论去哪吃 少吃一点哦 健康第一!!!!>>>\n\n"
+    # 
   end
 end

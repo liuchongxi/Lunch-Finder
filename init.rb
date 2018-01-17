@@ -13,7 +13,8 @@ require "guide"
 
 puts "Please select a restaurant location area:"
 print ">>>>>> "
-location = gets.chomp
+area = gets.chomp
+area = area + ".txt" if !area.include?(".txt")
 
-guide = Guide.new(location)
+guide = Guide.new(area)
 guide.launch!
