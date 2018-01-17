@@ -2,7 +2,7 @@ require 'restaurant'
 
 class Guide
 
-  def initialize area=nil
+  def initialize area = nil
     # locate the restaurant text file at path
     Restaurant.filepath = area
     if Restaurant.file_useable?
@@ -21,10 +21,30 @@ class Guide
   def launch!
     introduction
     # action loop
-    #   what do you want to do? (list, find, add, quit)
-    #   do that action
-    # repeat until user quits
+    result = nil
+    until result == :quit do
+      #   what do you want to do? (list, find, add, quit)
+      print "> "
+      user_response = gets.chomp
+      #   do that action
+      result = do_action(user_response)
+    end
     conclusion
+  end
+
+  def do_action action
+    case action
+    when "list"
+      puts "listing..."
+    when "find"
+      puts "finding..."
+    when "add"
+      puts "Adding..."
+    when "quit"
+      return :quit
+    else
+      puts "\nI dont't understand that command.\n"
+    end
   end
 
   def introduction
