@@ -16,5 +16,5 @@ print "> "
 area = gets.chomp
 area = area + ".txt" if !area.include?(".txt")
 
-guide = Guide.new(area)
+guide = Guide.new area
 guide.launch!

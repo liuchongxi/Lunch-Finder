@@ -4,9 +4,11 @@ class Guide
 
   class Config
     @@actions = ['list', 'find', 'add', 'quit']
+
     def self.actions
       @@actions
     end
+
   end
 
   def initialize area = nil
@@ -27,13 +29,11 @@ class Guide
 
   def launch!
     introduction
-
     result = nil
     until result == :quit do
       action = get_action
-      result = do_action(action)
+      result = do_action action
     end
-
     conclusion
   end
 
@@ -55,11 +55,28 @@ class Guide
     when "find"
       puts "finding..."
     when "add"
-      puts "Adding..."
+      add
     when "quit"
       return :quit
     else
       puts "\nI dont't understand that command.\n"
+    end
+  end
+
+  def add
+    puts "\nAdd a restaurant\n\n".upcase
+    restaurant = Restaurant.new
+    print "Restaurant name: "
+    restaurant.name = gets.chomp.strip
+    print "Restaurant cuisine type: "
+    restaurant.cuisine = gets.chomp.strip
+    print "Restaurant average price: "
+    restaurant.price = gets.chomp.strip
+
+    if restaurant.save
+      puts "\nRestaurant Added\n\n"
+    else
+      puts "\nSave Error: Restaurant not added\n\n"
     end
   end
 
