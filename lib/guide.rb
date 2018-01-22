@@ -32,8 +32,8 @@ class Guide
     introduction
     result = nil
     until result == :quit do
-      action = get_action
-      result = do_action action
+      action, args = get_action
+      result = do_action action, args
     end
     conclusion
   end
@@ -44,17 +44,19 @@ class Guide
       puts "Some actions are: " + Guide::Config.actions.join(", ") if action
       print "> "
       user_response = gets.chomp
-      action = user_response.downcase.strip
+      args = user_response.downcase.strip.split(' ')
+      action = args.shift
     end
-    action
+    [action, args]
   end
 
-  def do_action action
+  def do_action action, args = []
     case action
     when "list"
       list
     when "find"
-      puts "finding..."
+      keyword = args.shift
+      find keyword
     when "add"
       add
     when "quit"
@@ -68,6 +70,22 @@ class Guide
     output_action_header "Listing restaurant"
     restaurants = Restaurant.saved_restaurants
     output_restaurant_table restaurants
+  end
+
+  def find keyword = ""
+    output_action_header "Find a restaurant"
+    if keyword
+      restaurants = Restaurant.saved_restaurants
+      found = restaurants.select do |restaurant|
+        restaurant.name.downcase.include?(keyword.downcase) ||
+        restaurant.cuisine.downcase.include?(keyword.downcase) ||
+        restaurant.price.to_i <= keyword.to_i
+      end
+      output_restaurant_table found
+    else
+      puts "Find using a key phrase to search the restaurant list."
+      puts "Examples: 'find tamale', 'find Mexican', 'find mex'\n\n"
+    end
   end
 
   def add
@@ -104,7 +122,7 @@ class Guide
     restaurants.each do |restaurant|
       line = " " << restaurant.name.titleize.ljust(30)
       line << " " + restaurant.cuisine.titleize.ljust(20)
-      line << " " + restaurant.formatted_price.rjust(6)
+      line << " " + restaurant.formatted_price.ljust(6)
       puts line
     end
     puts "No restaurants found" if restaurants.empty?
