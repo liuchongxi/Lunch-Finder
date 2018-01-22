@@ -28,8 +28,17 @@ class Restaurant
   end
 
   def self.saved_restaurants
-  # read the restaurant file
-  # return instances of restaurant
+    # do we have to load the file every time we try to list the restaurant
+    # or we can store it in to a instance variable, and check every time first
+    restaurants = []
+    if file_useable?
+      file = File.new @@filepath, 'r'
+      file.each_line do |line|
+        restaurants << Restaurant.new.import_line(line.chomp)
+      end
+      file.close
+    end
+    restaurants
   end
 
   def self.build_using_questions
@@ -50,6 +59,12 @@ class Restaurant
     @price = args[:price] || ""
   end
 
+  def import_line line
+    line_array = line.split("\t")
+    @name, @cuisine, @price = line_array
+
+    self
+  end
   def save
     return false unless Restaurant.file_useable?
     return false if @name.empty? || @cuisine.empty? || @price.empty?
