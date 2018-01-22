@@ -1,4 +1,7 @@
+require "support/number_helper"
+
 class Restaurant
+  include NumberHelper
 
   @@filepath = nil
 
@@ -65,6 +68,7 @@ class Restaurant
 
     self
   end
+
   def save
     return false unless Restaurant.file_useable?
     return false if @name.empty? || @cuisine.empty? || @price.empty?
@@ -72,5 +76,9 @@ class Restaurant
       file.puts "#{[@name, @cuisine, @price].join("\t")}\n"
     end
     return true
+  end
+
+  def formatted_price
+    number_to_currency(@price)
   end
 end

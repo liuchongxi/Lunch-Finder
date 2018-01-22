@@ -1,4 +1,5 @@
 require 'restaurant'
+require 'support/string_extend'
 
 class Guide
 
@@ -64,15 +65,13 @@ class Guide
   end
 
   def list
-    puts "\nListing a restaurant\n\n".upcase
+    output_action_header "Listing restaurant"
     restaurants = Restaurant.saved_restaurants
-    restaurants.each do |restaurant|
-      puts restaurant.name + " | " + restaurant.cuisine + " | " + restaurant.price
-    end
+    output_restaurant_table restaurants
   end
 
   def add
-    puts "\nAdd a restaurant\n\n".upcase
+    output_action_header "Add a restaurant"
     restaurant = Restaurant.build_using_questions
     if restaurant.save
       puts "\nRestaurant Added\n\n"
@@ -89,5 +88,26 @@ class Guide
   def conclusion
     puts "\n\n<<<不论去哪吃 少吃一点哦 健康第一!!!!>>>\n\n"
     # 
+  end
+
+  private
+
+  def output_action_header text
+    puts "\n#{text.upcase.center(60)}\n\n"
+  end
+
+  def output_restaurant_table restaurants = []
+    print " " + "Name".ljust(30)
+    print " " + "Cuisine".ljust(20)
+    print " " + "Price".ljust(6) + "\n"
+    puts "-" * 60
+    restaurants.each do |restaurant|
+      line = " " << restaurant.name.titleize.ljust(30)
+      line << " " + restaurant.cuisine.titleize.ljust(20)
+      line << " " + restaurant.formatted_price.rjust(6)
+      puts line
+    end
+    puts "No restaurants found" if restaurants.empty?
+    puts "-" * 60
   end
 end
